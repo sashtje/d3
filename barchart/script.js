@@ -64,6 +64,13 @@ async function createChart(data) {
     .attr("id", "y-axis")
     .attr("transform", "translate(" + padding + ", 0)")
     .call(yAxis);
+
+  svg
+    .append("text")
+    .text(data.name.split(", ")[0])
+    .attr("transform", "rotate(-90)")
+    .attr("x", -200)
+    .attr("y", 65);
 }
 
 async function main() {
