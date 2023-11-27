@@ -20,7 +20,7 @@ async function createChart(data) {
   const maxDate = new Date(data.to_date);
 
   const xScale = d3
-    .scaleLinear()
+    .scaleTime()
     .domain([minDate, maxDate])
     .range([padding, w - padding]);
 
@@ -35,14 +35,29 @@ async function createChart(data) {
     .attr("width", w)
     .attr("height", h);
 
-  const xAxis = d3.axisBottom().scale(xScale);
+  const xAxis = d3.axisBottom(xScale);
   const yAxis = d3.axisLeft(yScale);
+
+  const rectWidth = (w - 2 * padding) / dataset.length;
+
+  svg
+    .selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("data-date", (d) => d[0])
+    .attr("data-gdp", (d) => d[1])
+    .attr("x", (_, i) => padding + i * rectWidth)
+    .attr("y", (d, _) => yScale(d[1]))
+    .attr("width", rectWidth)
+    .attr("height", (d) => h - padding - yScale(d[1]));
 
   svg
     .append("g")
     .attr("id", "x-axis")
     .attr("transform", "translate(0, " + (h - padding) + ")")
-    .call(xAxis.tickFormat(d3.timeFormat("%Y")));
+    .call(xAxis);
 
   svg
     .append("g")
