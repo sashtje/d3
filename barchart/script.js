@@ -10,11 +10,50 @@ async function getJSONData() {
   }
 }
 
+function getFormatDateData(date) {
+  const [year, month] = date.split("-");
+  let formatDate = year;
+
+  switch (month) {
+    case "01":
+      formatDate += ` Q1`;
+      break;
+
+    case "04":
+      formatDate += ` Q2`;
+      break;
+
+    case "07":
+      formatDate += ` Q3`;
+      break;
+
+    case "10":
+      formatDate += ` Q4`;
+      break;
+  }
+
+  return formatDate;
+}
+
+function getFormatGDPData(gdp) {
+  return `${gdp.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  })} Billion`;
+}
+
 async function createChart(data) {
   const w = 900;
   const h = 500;
   const padding = 40;
   const dataset = data.data;
+
+  const tooltip = d3
+    .select(".barchart__wrapper")
+    .append("div")
+    .attr("id", "tooltip")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
   const minDate = new Date(data.from_date);
   const maxDate = new Date(data.to_date);
@@ -48,10 +87,28 @@ async function createChart(data) {
     .attr("class", "bar")
     .attr("data-date", (d) => d[0])
     .attr("data-gdp", (d) => d[1])
-    .attr("x", (_, i) => padding + i * rectWidth)
-    .attr("y", (d, _) => yScale(d[1]))
+    .attr("data-index", (_, i) => i)
+    .attr("x", (d) => xScale(new Date(d[0])))
+    .attr("y", (d) => yScale(d[1]))
     .attr("width", rectWidth)
-    .attr("height", (d) => h - padding - yScale(d[1]));
+    .attr("height", (d) => h - padding - yScale(d[1]))
+    .on("mouseover", (event, d) => {
+      const index = event.target.dataset.index;
+
+      tooltip.transition().duration(100).style("opacity", 0.9);
+      tooltip
+        .html(
+          `<div>${getFormatDateData(d[0])}</div><div>${getFormatGDPData(
+            d[1]
+          )}</div>`
+        )
+        .attr("data-date", dataset[index][0])
+        .style("left", padding + index * rectWidth + 30 + "px")
+        .style("bottom", "150px");
+    })
+    .on("mouseout", () => {
+      tooltip.transition().duration(100).style("opacity", 0);
+    });
 
   svg
     .append("g")
