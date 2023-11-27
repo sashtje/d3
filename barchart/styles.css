@@ -21,10 +21,24 @@ body {
 .barchart {
   background-color: beige;
   display: flex;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+  padding: 20px;
+}
+
+@media screen and (max-width: 980px) {
+  .barchart {
+    justify-content: unset;
+  }
+}
+
+@media screen and (max-height: 640px) {
+  .barchart {
+    align-items: flex-start;
+  }
 }
 
 .barchart__container {

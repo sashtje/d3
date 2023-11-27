@@ -42,6 +42,21 @@ function getFormatGDPData(gdp) {
   })} Billion`;
 }
 
+function getLeftCoordForTooltip(
+  index,
+  datasetLength,
+  padding,
+  rectDecimalWidth
+) {
+  const median = Math.round(datasetLength / 2);
+
+  if (1 + +index <= median) {
+    return padding + index * rectDecimalWidth + 30 + "px";
+  } else {
+    return padding + index * rectDecimalWidth - 180 + "px";
+  }
+}
+
 async function createChart(data) {
   const w = 900;
   const h = 500;
@@ -104,7 +119,15 @@ async function createChart(data) {
           )}</div>`
         )
         .attr("data-date", dataset[index][0])
-        .style("left", padding + index * rectDecimalWidth + 30 + "px")
+        .style(
+          "left",
+          getLeftCoordForTooltip(
+            index,
+            dataset.length,
+            padding,
+            rectDecimalWidth
+          )
+        )
         .style("bottom", "150px");
     })
     .on("mouseout", () => {
