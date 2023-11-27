@@ -77,7 +77,8 @@ async function createChart(data) {
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3.axisLeft(yScale);
 
-  const rectWidth = (w - 2 * padding) / dataset.length;
+  const rectDecimalWidth = Math.ceil((w - 2 * padding) / dataset.length);
+  const rectWidth = rectDecimalWidth + 1;
 
   svg
     .selectAll("rect")
@@ -88,7 +89,7 @@ async function createChart(data) {
     .attr("data-date", (d) => d[0])
     .attr("data-gdp", (d) => d[1])
     .attr("data-index", (_, i) => i)
-    .attr("x", (d) => xScale(new Date(d[0])))
+    .attr("x", (d) => Math.ceil(xScale(new Date(d[0]))))
     .attr("y", (d) => yScale(d[1]))
     .attr("width", rectWidth)
     .attr("height", (d) => h - padding - yScale(d[1]))
@@ -103,7 +104,7 @@ async function createChart(data) {
           )}</div>`
         )
         .attr("data-date", dataset[index][0])
-        .style("left", padding + index * rectWidth + 30 + "px")
+        .style("left", padding + index * rectDecimalWidth + 30 + "px")
         .style("bottom", "150px");
     })
     .on("mouseout", () => {
