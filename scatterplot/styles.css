@@ -63,14 +63,19 @@ body {
   font-size: 20px;
 }
 
-.bar {
+.scatterplot__chart {
+  max-width: 100%;
+  height: auto;
+}
+
+/* .bar {
   fill: rgb(25, 217, 153);
 }
 
 .bar:hover {
   fill: rgb(5, 173, 5);
   cursor: pointer;
-}
+} */
 
 .tooltip {
   position: absolute;
@@ -85,4 +90,5 @@ body {
   border-radius: 10px;
   box-shadow: 2px 2px 20px #e4e3e3;
   pointer-events: none;
+  opacity: 0;
 }
