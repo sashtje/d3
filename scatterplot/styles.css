@@ -68,14 +68,45 @@ body {
   height: auto;
 }
 
-/* .bar {
+.dot,
+.legend__item_withoutDoping rect,
+.legend__item_withDoping rect {
+  stroke-width: 1px;
+  stroke: #000000;
+}
+
+.dot {
+  fill: rgb(25, 217, 153);
+  transition: 0.2s;
+}
+
+.dot:hover {
+  fill: rgb(22, 136, 22);
+  cursor: pointer;
+}
+
+.dot_dopping {
+  fill: rgb(247, 190, 3);
+}
+
+.dot_dopping:hover {
+  fill: rgb(173, 69, 5);
+  cursor: pointer;
+}
+
+.legend__item_withoutDoping rect {
   fill: rgb(25, 217, 153);
 }
 
-.bar:hover {
-  fill: rgb(5, 173, 5);
-  cursor: pointer;
-} */
+.legend__item_withDoping rect {
+  fill: rgb(247, 190, 3);
+}
+
+.legend__item_withoutDoping text,
+.legend__item_withDoping text {
+  font-size: 12px;
+  font-style: italic;
+}
 
 .tooltip {
   position: absolute;

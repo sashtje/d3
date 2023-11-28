@@ -15,6 +15,8 @@ async function createChart(data) {
   const w = svg.attr("width");
   const h = svg.attr("height");
   const padding = 40;
+  const circleRadius = 7;
+  const colorSampleSize = 20;
 
   const minDate = new Date(d3.min(data, (d) => d.Year - 1).toString());
   const maxDate = new Date(d3.max(data, (d) => d.Year + 1).toString());
@@ -47,6 +49,50 @@ async function createChart(data) {
     .attr("id", "y-axis")
     .attr("transform", "translate(" + padding + ", 0)")
     .call(yAxis.tickFormat(d3.timeFormat("%M:%S")));
+
+  svg
+    .selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("class", (d) => (d.Doping ? "dot dot_dopping" : "dot"))
+    .attr("cx", (d) => xScale(new Date(d.Year.toString())))
+    .attr("cy", (d) => yScale(d.Time))
+    .attr("r", circleRadius)
+    .attr("data-xvalue", (d) => d.Year)
+    .attr("data-yvalue", (d) => d.Time);
+
+  const legend = svg.append("g").attr("id", "legend").attr("class", "legend");
+
+  legendWithoutDoping = legend
+    .append("g")
+    .attr("class", "legend__item legend__item_withoutDoping")
+    .attr("transform", "translate(0, 160)");
+  legendWithoutDoping
+    .append("rect")
+    .attr("width", colorSampleSize)
+    .attr("height", colorSampleSize)
+    .attr("x", 840);
+  legendWithoutDoping
+    .append("text")
+    .text("No doping")
+    .attr("x", 780)
+    .attr("y", 14);
+
+  legendWithDoping = legend
+    .append("g")
+    .attr("class", "legend__item legend__item_withDoping")
+    .attr("transform", "translate(0, 190)");
+  legendWithDoping
+    .append("rect")
+    .attr("width", colorSampleSize)
+    .attr("height", colorSampleSize)
+    .attr("x", 840);
+  legendWithDoping
+    .append("text")
+    .text("With doping")
+    .attr("x", 770)
+    .attr("y", 14);
 }
 
 async function main() {
