@@ -59,8 +59,8 @@ body {
 }
 
 .scatterplot__error {
-  color: #ff0000;
-  font-size: 20px;
+  fill: #ff0000;
+  font-size: 24px;
 }
 
 .scatterplot__chart {
@@ -91,4 +91,20 @@ body {
   box-shadow: 2px 2px 20px #e4e3e3;
   pointer-events: none;
   opacity: 0;
+}
+
+@media screen and (max-width: 550px) {
+  .scatterplot__error {
+    font-size: 40px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .scatterplot__subtitle {
+    font-size: 16px;
+  }
 }
