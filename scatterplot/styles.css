@@ -1,0 +1,158 @@
+:root {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 28px;
+  font-weight: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.scatterplot {
+  background-color: beige;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding: 10px;
+}
+
+.scatterplot__container {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 20px #c4c4c4;
+}
+
+.scatterplot__title,
+.scatterplot__subtitle {
+  text-align: center;
+}
+
+.scatterplot__subtitle {
+  margin-top: 10px;
+  font-size: 20px;
+  font-style: italic;
+}
+
+.scatterplot__wrapper {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scatterplot__error {
+  fill: #ff0000;
+  font-size: 24px;
+}
+
+.scatterplot__chart {
+  max-width: 100%;
+  height: auto;
+}
+
+.dot,
+.legend__item_withoutDoping rect,
+.legend__item_withDoping rect {
+  stroke-width: 1px;
+  stroke: #000000;
+}
+
+.dot {
+  fill: rgb(25, 217, 153);
+  transition: 0.2s;
+}
+
+.dot:hover {
+  fill: rgb(22, 136, 22);
+  cursor: pointer;
+}
+
+.dot_dopping {
+  fill: rgb(247, 190, 3);
+}
+
+.dot_dopping:hover {
+  fill: rgb(173, 69, 5);
+  cursor: pointer;
+}
+
+.legend__item_withoutDoping rect {
+  fill: rgb(25, 217, 153);
+}
+
+.legend__item_withDoping rect {
+  fill: rgb(247, 190, 3);
+}
+
+.legend__item_withoutDoping text,
+.legend__item_withDoping text {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.tooltip {
+  font-size: 13px;
+  position: absolute;
+  max-width: 250px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  background-color: rgb(5, 173, 5);
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 2px 2px 20px #e4e3e3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.tooltip__row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tooltip__place {
+  font-weight: bold;
+}
+
+.tooltip__name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+@media screen and (max-width: 550px) {
+  .scatterplot__error {
+    font-size: 40px;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .scatterplot__subtitle {
+    font-size: 16px;
+  }
+}
