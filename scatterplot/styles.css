@@ -109,8 +109,9 @@ body {
 }
 
 .tooltip {
+  font-size: 13px;
   position: absolute;
-  width: 150px;
+  max-width: 250px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -122,6 +123,22 @@ body {
   box-shadow: 2px 2px 20px #e4e3e3;
   pointer-events: none;
   opacity: 0;
+}
+
+.tooltip__row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tooltip__place {
+  font-weight: bold;
+}
+
+.tooltip__name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px;
 }
 
 @media screen and (max-width: 550px) {

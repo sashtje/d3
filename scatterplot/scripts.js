@@ -18,8 +18,20 @@ async function createChart(data) {
   const circleRadius = 7;
   const colorSampleSize = 20;
 
-  const minDate = new Date(d3.min(data, (d) => d.Year - 1).toString());
-  const maxDate = new Date(d3.max(data, (d) => d.Year + 1).toString());
+  const dataset = data.map((item) => {
+    const [minutes, seconds] = item.Time.split(":");
+    const newTime = new Date(1970, 0, 1, 0, minutes, seconds);
+
+    return {
+      ...item,
+      Time: newTime,
+    };
+  });
+
+  const tooltip = d3.select(".tooltip");
+
+  const minDate = new Date(d3.min(dataset, (d) => d.Year - 1).toString());
+  const maxDate = new Date(d3.max(dataset, (d) => d.Year + 1).toString());
 
   const xScale = d3
     .scaleTime()
@@ -32,12 +44,8 @@ async function createChart(data) {
     .attr("transform", "translate(0, " + (h - padding) + ")")
     .call(xAxis);
 
-  data.forEach((item) => {
-    const [minutes, seconds] = item.Time.split(":");
-    item.Time = new Date(1970, 0, 1, 0, minutes, seconds);
-  });
-  const minTime = d3.min(data, (d) => d.Time);
-  const maxTime = d3.max(data, (d) => d.Time);
+  const minTime = d3.min(dataset, (d) => d.Time);
+  const maxTime = d3.max(dataset, (d) => d.Time);
 
   const yScale = d3
     .scaleTime()
@@ -52,15 +60,40 @@ async function createChart(data) {
 
   svg
     .selectAll("circle")
-    .data(data)
+    .data(dataset)
     .enter()
     .append("circle")
     .attr("class", (d) => (d.Doping ? "dot dot_dopping" : "dot"))
     .attr("cx", (d) => xScale(new Date(d.Year.toString())))
     .attr("cy", (d) => yScale(d.Time))
     .attr("r", circleRadius)
+    .attr("data-index", (_, i) => i)
     .attr("data-xvalue", (d) => d.Year)
-    .attr("data-yvalue", (d) => d.Time);
+    .attr("data-yvalue", (d) => d.Time)
+    .on("mouseover", (event, d) => {
+      const index = event.target.dataset.index;
+
+      tooltip.transition().duration(100).style("opacity", 0.9);
+      tooltip
+        .html(
+          `
+        <div class="tooltip__row">
+          <div class="tooltip__place">Place: ${d.Place}</div>
+          <div class="tooltip__country">${d.Nationality}</div>
+        </div>
+        <div class="tooltip__row">
+          <div class="tooltip__time">Time: ${data[index].Time}</div>
+          <div class="tooltip__year">${data[index].Year}</div>
+        </div>
+        <div class="tooltip__name">${d.Name}</div>
+        <div class="tooltip__doping">${d.Doping}</div>
+      `
+        )
+        .attr("data-year", d.Year);
+    })
+    .on("mouseout", () => {
+      tooltip.transition().duration(100).style("opacity", 0);
+    });
 
   const legend = svg.append("g").attr("id", "legend").attr("class", "legend");
 
